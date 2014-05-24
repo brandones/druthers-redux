@@ -1,0 +1,20 @@
+@media (max-width: 767px) {
+  .input-group-addon {
+    width:89%;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .input-group-addon {
+    width:94%;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .input-group-addon {
+    width:93%;
+  }
+}
+@media (min-width: 1200px) {
+  .input-group-addon {
+    width:94%;
+  }
+}

@@ -1,0 +1,106 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Brandon Istenes">
+    <link rel="shortcut icon" href="ico/favicon.ico">
+
+    <title>Druthers</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="lib/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="lib/css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/global.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body role="document">
+
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">Druthers</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="create.html">Create</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container" role="main">
+
+      <!-- form for poll creation -->
+      <form class="form-horizontal" action="javascript:void(0);" onsubmit="create(this)">
+      <fieldset>
+
+      <!-- Form Name -->
+      <legend>Create a Poll</legend>
+
+      <!-- Question -->
+      <div class="form-group">
+        <label class="col-md-2 control-label" for="question">Question</label>  
+        <div class="col-md-8">
+          <input id="question" name="question" type="text" placeholder="What's the best Doritos flavor?" class="form-control input-md" required="">
+        </div>
+      </div>
+
+      <!-- Options -->
+      <div id="options">
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="option">Options</label>  
+          <div class="col-md-6">
+            <input id="option" name="option" type="text" placeholder="" class="form-control input-md">
+          </div>
+        </div>
+      </div>
+      <label class="col-md-2 control-label" for=""></label>  
+      <button id="more" type="button" class="btn btn-default btn">
+          <span class="glyphicon glyphicon-plus"></span>
+      </button>
+
+      <!-- Submit -->
+      <div class="form-group">
+        <div class="col-md-2">
+          <button id="createButton" type="submit" class="btn btn-success">
+            Create
+          </button>
+        </div>
+      </div>
+
+      </fieldset>
+      </form>
+
+    </div> <!-- /container -->
+
+    <script src="js/global.js"></script>
+    <script src="js/create.js"></script>
+    <script src="lib/js/async.js"></script>
+    <script src='https://cdn.firebase.com/js/client/1.0.15/firebase.js'></script>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="lib/js/bootstrap.min.js"></script>
+  </body>
+</html>
+

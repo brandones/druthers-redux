@@ -27,26 +27,44 @@
 
   <body role="document">
 
-    <div id="navbar"></div>
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">Druthers</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="create.html">Create</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
 
     <div class="container" role="main">
 
-      <!-- Main jumbotron for poll creation -->
-      <div class="jumbotron">
-        <h3>If I had my druthers...</h3>
-        <p>This app makes it easy to hold polls with Schulze Method voting.</p>
-        <p><a href="create.html" class="btn btn-primary btn-lg" role="button">Create a Poll&raquo;</a></p>
-      </div>
+    <div id="winner"></div>
+
+    <div id="votesTable"></div>
 
     </div> <!-- /container -->
 
-
     <!-- Libs -->
+    <script src='https://cdn.firebase.com/js/client/1.0.15/firebase.js'></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="lib/js/bootstrap.min.js"></script>
+    <script src="lib/js/async.js"></script>
+    <script src="lib/js/schulze.js"></script>
 
     <!-- Scripts -->
-    <script src="js/global.js"></script>
+    <script src='js/global.js'></script>
+    <script src='js/results.js'></script>
 
   </body>
 </html>

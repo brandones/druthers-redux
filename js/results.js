@@ -1,8 +1,9 @@
 $( function() {
-  $("#winner").load("chunks/winner.html.chunk");
-  $("#winningOption").append(getWinner());
+  $("#winner").load("chunks/winner.html.chunk", function () {
+    $("#winningOption").append(getWinner());
+  });
 });
 
 function getWinner() {
-
+  CHECK ONE TWO
 }

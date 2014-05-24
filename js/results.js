@@ -5,5 +5,13 @@ $( function() {
 });
 
 function getWinner() {
-  CHECK ONE TWO
+  return "CHECK ONE TWO";
+}
+
+function ballot_to_schulze_vote(ballot) {
+  
+}
+
+function schulze_vote_to_ballot(schulze_vote) {
+
 }

@@ -29,11 +29,11 @@ function render(err, results) {
   
   var options = results[1];
   for( var i = 0; i < options.length; i++) {
-    addOption(options[i]);
+    addOption(options[i], i);
   }
 }
 
-function addOption(option) {
+function addOption(option, optionIndex) {
   var optionsNode = document.getElementById("options");
 
   var optionFormGroup = document.createElement("div");
@@ -46,9 +46,9 @@ function addOption(option) {
   inputDiv.className = "input-group col-md-8";
   
   var optionInput = document.createElement("input");
-  optionInput.name = option.hashCode();
+  optionInput.name = Vote.alphabet[optionIndex];
   optionInput.type = "text";
-  optionInput.className = "form-control ballotOption";
+  optionInput.className = "form-control ballot-option";
 
   var optionTextBox = document.createElement("span");
   optionTextBox.className = "input-group-addon";
@@ -66,25 +66,37 @@ function addOption(option) {
 function vote(form) {
   // parse form
   var encodedNickname = encodeURIComponent( form.nickname.value );
-  var ballot = [];
-  for (var i = 0; i < form.elements.length; i++) {
-    if (form.elements[i].className == "ballotOption") {
-      ballot.push(
-          {
-            "optionHash": form.elements[i].name,
-            "rank": form.elements[i].value
-          }
-      );
+  var optionIndex = 0;
+  var ballotArray = []
+  for( var i = 0; i < form.elements.length; i++ ) {
+    if( $(form.elements[i]).hasClass("ballot-option") ) {
+      if( !(form.elements[i].value in ballotArray) ) {
+        ballotArray[form.elements[i].value] = "";
+      }
+      ballotArray[form.elements[i].value] += form.elements[i].name;
     }
   }
+  var ballotSchulze = "";
+
+  var index = 0;
+  ballotArray.forEach( function(element) {
+    console.log(element);
+    if( index != 0 ) {
+      ballotSchulze += "-";
+    }
+    ballotSchulze += element;
+    index++;
+  });
+
+  console.log( "ballotSchulze: " + ballotSchulze );
 
   // get id
   var id = get_query_parameter( "id" );
 
   // serialize to firebase
   var ballotRef = new Firebase("https://glowing-fire-9001.firebaseio.com/polls/"
-      + id + "/" + encodedNickname);
-  ballotRef.set(ballot, function(err, results) {
+      + id + "/votes/" + encodedNickname);
+  ballotRef.set(ballotSchulze, function(err, results) {
     if( err ) {
       console.log("oh shit, " + error);
     } else {

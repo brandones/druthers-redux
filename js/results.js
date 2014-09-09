@@ -1,34 +1,36 @@
+var id = get_query_parameter( "id" );
+
 $( function() {
   $("#winner").load("chunks/winner.html.chunk", function () {
     getPollData(getResults); // getResults calls renderWinner
   });
+
+  //var voteButton = $("#voteButton");
+  //voteButton.click(function() {
+    //window.location.href = "vote.html?id=" + id;
+  //});
 });
 
+
 function getPollData(callback) {
-  console.log( "getPollData called" );
-  var id = get_query_parameter( "id" );
   var pollRef = new Firebase("https://glowing-fire-9001.firebaseio.com/polls/" + id);
 
   var options = [];
   var votes = {};
   var callbacksLeft = 2;
-  console.log( "getPollData" );
 
   var optionsRef = pollRef.child("options");
   optionsRef.on("value", function(snapshot) {
-    console.log( "optionsRef callback" );
     options = snapshot.val();
     done();
   });
 
   var votesRef = pollRef.child("votes");
   votesRef.on("value", function(snapshot) {
-    console.log( "votesRef callback" );
     snapshot.forEach( function( vote ) {
-
-      votes[vote.name()] = vote.val();
+      var name = decodeURIComponent( vote.name() );
+      votes[name] = vote.val();
     });
-    console.log(JSON.stringify(votes, undefined, 2));
     done();
   });
 
@@ -40,33 +42,29 @@ function getPollData(callback) {
   }
 }
 
+
 function getResults(err, options, votes) {
-  console.log("getResults called");
-  console.log(options);
-  console.log(JSON.stringify(votes, undefined, 2));
-  if (err) {
+  if( err ) {
     console.log("oh shit, " + err);
   }
 
   var schulze = new Schulze();
   
-  for (var i = 0; i < options.length; i++) {
+  for( var i = 0; i < options.length; i++ ) {
     schulze.addOption(options[i]);
   }
 
   schulze.startVoting();
 
   var voters = Object.keys(votes);
-  for (var i = 0; i < voters.length; i++) {
-    if (!schulze.pushVote(votes[voters[i]])) {
+  for(var i = 0; i < voters.length; i++ ) {
+    if( !schulze.pushVote( votes[voters[i]] ) ) {
       console.log("Failed to add vote \"" + newVote + "\"");
       return "FAILD";
     }
   };
 
   var results = schulze.getResult().split('-');
-  console.log("results:");
-  console.log(results);
   var resultsArr = [];
   for( var placeDex = 0; placeDex < results.length; placeDex++ ) {
     resultsArr[placeDex] = [];
@@ -75,11 +73,44 @@ function getResults(err, options, votes) {
       resultsArr[placeDex].push(options[Vote.alphabet.indexOf(c)]);
     }
   }
-  console.log(resultsArr);
-  render(null, resultsArr);
+  renderWinner(null, resultsArr);
+  renderVotes(null, options, votes);
 }
 
-function render( err, results ) {
+
+function renderWinner( err, results ) {
   $("#winningOption").append(results[0].join(", "));
+}
+
+
+function renderVotes( err, options, votes ) {
+  for( var i = 0; i < options.length; i++ ) {
+    $("#votesHead th:last").after("<th>" + options[i] + "</th>");
+  }
+  var voters = Object.keys(votes);
+  for( var i = 0; i < voters.length; i++ ) {
+    $("#votesBody").append( ballotRowHTMLFromSchulzeBallot( voters[i], votes[voters[i]] ) );
+  }
+}
+
+
+function ballotRowHTMLFromSchulzeBallot( voterName, schulzeBallot ) {
+  var rowHTMLString = "";
+  rowHTMLString += "<tr>";
+  rowHTMLString += "<td>" + voterName + "</td>";
+  var ballotMap = [];
+  var place = 0;
+  for( var resChar = 0; resChar < schulzeBallot.length; resChar++ ) {
+    if( schulzeBallot.charAt(resChar) === "-" ) {
+      place++;
+      continue;
+    }
+    ballotMap[Vote.alphabet.indexOf(schulzeBallot.charAt(resChar))] = place + 1;
+  }
+  for( var i = 0; i < ballotMap.length; i++ ) {
+    rowHTMLString +=  "<td>" + ballotMap[i] + "</td>";
+  }
+  rowHTMLString += "</tr>";
+  return rowHTMLString;
 }
 

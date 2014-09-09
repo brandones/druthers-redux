@@ -1,4 +1,5 @@
 // load navbar
+
 $( function() {
   $("#navbar").load("chunks/navbar.html.chunk");
 });

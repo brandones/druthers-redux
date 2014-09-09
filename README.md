@@ -4,4 +4,5 @@ TODO:
 - [ ] write-ins
 - [ ] poll edits
 - [ ] vote input validation
+  [ ] name input validation
 

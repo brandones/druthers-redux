@@ -1,23 +1,35 @@
+'use strict';
+
+/******************************************************************************/
+// Globals
+
 var id = get_query_parameter("id");
 
 var pollRef = new Firebase("https://glowing-fire-9001.firebaseio.com/polls/" + id);
 
-async.parallel([
-    function(callback) {
-      var questionRef = pollRef.child("question");
-      questionRef.on("value", function(snapshot) {
-        callback(null, snapshot.val());
-      });
-    },
-    function(callback) {
-      var optionsRef = pollRef.child("options");
-      optionsRef.on("value", function(snapshot) {
-        callback(null, snapshot.val());
-      });
-    }
-  ],
-  render
-);
+/******************************************************************************/
+// Main
+
+$( function() {
+  async.parallel([
+      function(callback) {
+        var questionRef = pollRef.child("question");
+        questionRef.on("value", function(snapshot) {
+          callback(null, snapshot.val());
+        });
+      },
+      function(callback) {
+        var optionsRef = pollRef.child("options");
+        optionsRef.on("value", function(snapshot) {
+          callback(null, snapshot.val());
+        });
+      }
+    ],
+    render
+  );
+});
+
+/******************************************************************************/
 
 function render(err, results) {
   if (err) {
@@ -32,6 +44,8 @@ function render(err, results) {
     addOption(options[i], i);
   }
 }
+
+/******************************************************************************/
 
 function addOption(option, optionIndex) {
   var optionsNode = document.getElementById("options");
@@ -63,6 +77,9 @@ function addOption(option, optionIndex) {
   optionsNode.appendChild( optionFormGroup );
 }
 
+/******************************************************************************/
+// A couple helper functions for vote(...)
+
 // From T.J. Crowder on StackOverflow
 // http://stackoverflow.com/questions/10834796/validate-that-a-string-is-a-positive-integer
 function isValidInteger(str) {
@@ -76,6 +93,8 @@ function popupAlert(message) {
   $("#alertbox").attr("role", "alert");
   $("#alertbox").text(message);
 }
+
+/******************************************************************************/
 
 function vote(form) {
   // parse form

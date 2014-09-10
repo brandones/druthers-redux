@@ -1,4 +1,19 @@
-var optionsNode = document.getElementById("options");
+'use strict';
+
+/******************************************************************************/
+// Main
+
+$( function() {
+  addLine();
+  addLine();
+
+  var moreButton = document.getElementById( "more" );
+  moreButton.onclick = addLine;
+
+  $('#datetimepicker').datetimepicker();
+});
+
+/******************************************************************************/
 
 function addLine() {
 
@@ -18,6 +33,7 @@ function addLine() {
   optionInput.type = "text";
   optionInput.className = "form-control input-md";
 
+  var optionsNode = document.getElementById("options");
   optionDiv.appendChild( optionInput );
   optionFormGroup.appendChild( optionLabel );
   optionFormGroup.appendChild( optionDiv );
@@ -25,13 +41,7 @@ function addLine() {
 
 }
 
-addLine();
-addLine();
-
-var moreButton = document.getElementById( "more" );
-moreButton.onclick = addLine;
-
-
+/******************************************************************************/
 
 function create(form) {
   // parse form
@@ -44,6 +54,9 @@ function create(form) {
       }
     }
   }
+  var endtime = form.endtime.value;
+  console.log(endtime);
+  return;
 
   // create poll id
   var id = makeid();
@@ -62,6 +75,9 @@ function create(form) {
       },
       function(callback) {
         pollRef.child("createdAt").set(new Date().getTime(), callback);
+      },
+      function(callback) {
+        pollRef.child("endTime").set(endtime);
       }
     ],
     function(err, results) {
@@ -78,7 +94,7 @@ function create(form) {
   );
 }
 
-
+/******************************************************************************/
 
 // from http://stackoverflow.com/questions/1349404/generate-a-string-of-5-random-characters-in-javascript
 function makeid() {

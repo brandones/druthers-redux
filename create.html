@@ -46,18 +46,34 @@
       </div>
 
       <!-- Options -->
-      <div id="options">
-        <div class="form-group">
-          <label class="col-md-2 control-label" for="option">Options</label>  
-          <div class="col-md-6">
-            <input id="option" name="option" type="text" placeholder="" class="form-control input-md">
+      <div id="options-container" style="padding-bottom: 15px">
+        <div id="options">
+          <div class="form-group">
+            <label class="col-md-2 control-label" for="option">Options</label>  
+            <div class="col-md-6">
+              <input id="option" name="option" type="text" placeholder="" class="form-control input-md">
+            </div>
+          </div>
+        </div>
+        <label class="col-md-2 control-label" for=""></label>  
+        <button id="more" type="button" class="btn btn-default btn">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+      </div>
+
+      <!-- End Date -->
+      <label class="col-md-2 control-label" for="endtime">End Date (Optional)</label>  
+      <div class="row" style="padding-bottom: 15px">
+        <div class='col-sm-6'>
+          <div class="form-group">
+            <div class='input-group date' id='datetimepicker'>
+              <input type='text' class="form-control" id="endtime" />
+              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
           </div>
         </div>
       </div>
-      <label class="col-md-2 control-label" for=""></label>  
-      <button id="more" type="button" class="btn btn-default btn">
-          <span class="glyphicon glyphicon-plus"></span>
-      </button>
 
       <!-- Submit -->
       <div class="form-group">
@@ -79,9 +95,14 @@
     <script src="lib/js/bootstrap.min.js"></script>
     <script src="lib/js/async.js"></script>
 
+    <!-- DateTimePicker -->
+    <script type="text/javascript" src="lib/js/moment.js"></script>
+    <script type="text/javascript" src="lib/js/bootstrap-datetimepicker.min.js"></script>
+
     <!-- Scripts -->
     <script src="js/global.js"></script>
     <script src="js/create.js"></script>
+
 
   </body>
 </html>

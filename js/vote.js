@@ -40,7 +40,7 @@ function addOption(option, optionIndex) {
   optionFormGroup.className = "form-group";
 
   var optionDiv = document.createElement("div");
-  optionDiv.className = "col-xs-offset-0 col-sm-offset-1 col-md-offset-1 col-lg-offset-1";
+  optionDiv.className = "";
 
   var inputDiv = document.createElement("div");
   inputDiv.className = "input-group col-md-8";
@@ -63,6 +63,20 @@ function addOption(option, optionIndex) {
   optionsNode.appendChild( optionFormGroup );
 }
 
+// From T.J. Crowder on StackOverflow
+// http://stackoverflow.com/questions/10834796/validate-that-a-string-is-a-positive-integer
+function isValidInteger(str) {
+  var n = ~~Number(str);
+  return String(n) === str && n >= 0;
+}
+
+function popupAlert(message) {
+  $("#alertbox").addClass("alert");
+  $("#alertbox").addClass("alert-danger");
+  $("#alertbox").attr("role", "alert");
+  $("#alertbox").text(message);
+}
+
 function vote(form) {
   // parse form
   var encodedNickname = encodeURIComponent( form.nickname.value );
@@ -70,6 +84,10 @@ function vote(form) {
   var ballotArray = []
   for( var i = 0; i < form.elements.length; i++ ) {
     if( $(form.elements[i]).hasClass("ballot-option") ) {
+      if( !isValidInteger(form.elements[i].value) ) {
+        popupAlert("Please enter only integers for rankings.");
+        return;
+      }
       if( !(form.elements[i].value in ballotArray) ) {
         ballotArray[form.elements[i].value] = "";
       }

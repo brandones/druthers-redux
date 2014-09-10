@@ -5,10 +5,10 @@ $( function() {
     getPollData(getResults); // getResults calls renderWinner
   });
 
-  //var voteButton = $("#voteButton");
-  //voteButton.click(function() {
-    //window.location.href = "vote.html?id=" + id;
-  //});
+  var voteButton = $("#voteButton");
+  voteButton.click(function() {
+    window.location.href = "vote.html?id=" + id;
+  });
 });
 
 

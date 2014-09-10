@@ -43,7 +43,7 @@ function addOption(option, optionIndex) {
   optionDiv.className = "";
 
   var inputDiv = document.createElement("div");
-  inputDiv.className = "input-group col-md-8";
+  inputDiv.className = "input-group";
   
   var optionInput = document.createElement("input");
   optionInput.name = Vote.alphabet[optionIndex];

@@ -3,9 +3,9 @@ html, body {
 }
 body {
   padding-top: 70px;
-}
-body {
   padding-bottom: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .container > footer p {
   text-align: center; /* center align it with the container */

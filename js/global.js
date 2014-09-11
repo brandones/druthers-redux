@@ -1,7 +1,7 @@
 // load navbar
 
 $( function() {
-  $("#navbar").load("chunks/navbar.html.chunk");
+  $("#navbar").load("chunks/navbar.chunk.html");
 });
 
 // from http://stackoverflow.com/questions/979975/how-to-get-the-value-from-url-parameter

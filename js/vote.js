@@ -71,10 +71,12 @@ function render(err, results) {
 
 function renderVoteForm(options) {
   $( function() {
-    $("#contentbox").load("chunks/voteform.html.chunk", function() {
+    $("#contentbox").load("chunks/voteform.chunk.html", function() {
       for( var i = 0; i < options.length; i++) {
         addOption(options[i], i);
       }
+      $( "#options" ).sortable();
+//      $( "#options" ).disableSelection();  not sure what this does
     });
   });
 }
@@ -82,33 +84,15 @@ function renderVoteForm(options) {
 /******************************************************************************/
 
 function addOption(option, optionIndex) {
-  var optionsNode = document.getElementById("options");
+  var optionDiv = $("<div></div>");
+  optionDiv.addClass("highlight");
 
-  var optionFormGroup = document.createElement("div");
-  optionFormGroup.className = "form-group";
+  var optionNode = $("<li></li>");
+  optionNode.text(option);
 
-  var optionDiv = document.createElement("div");
-  optionDiv.className = "";
+  optionDiv.append(optionNode);
 
-  var inputDiv = document.createElement("div");
-  inputDiv.className = "input-group";
-  
-  var optionInput = document.createElement("input");
-  optionInput.name = Vote.alphabet[optionIndex];
-  optionInput.type = "text";
-  optionInput.className = "form-control ballot-option";
-
-  var optionTextBox = document.createElement("span");
-  optionTextBox.className = "input-group-addon";
-
-  var optionText = document.createTextNode(option);
-
-  optionTextBox.appendChild( optionText );
-  inputDiv.appendChild( optionInput );
-  inputDiv.appendChild( optionTextBox );
-  optionDiv.appendChild( inputDiv );
-  optionFormGroup.appendChild( optionDiv );
-  optionsNode.appendChild( optionFormGroup );
+  $("#options").append(optionDiv);
 }
 
 /******************************************************************************/

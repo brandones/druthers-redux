@@ -83,7 +83,7 @@ function create(form) {
         console.log("oh shit, " + error);
       } else {
         // redirect to poll vote page
-        window.location.href = "vote.html?id=" + id;
+        window.location.href = "results.html?id=" + id;
       }
     }
   );

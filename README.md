@@ -4,5 +4,4 @@ TODO:
 - [ ] complete results listing
 - [ ] write-ins
 - [ ] name input validation
-- [ ] create should go directly to results
 

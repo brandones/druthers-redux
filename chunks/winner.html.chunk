@@ -1,5 +1,0 @@
-<!-- Main jumbotron for poll results -->
-<div class="jumbotron">
-  <h3>And the winnner is...</h3>
-  <div id="winningOption"></div>
-</div>

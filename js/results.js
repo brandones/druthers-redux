@@ -1,23 +1,26 @@
+'use strict';
+
+/******************************************************************************/
+// Globals
+
 var id = get_query_parameter( "id" );
 
-$( function() {
-  $("#winner").load("chunks/winner.html.chunk", function () {
-    getPollData(getResults); // getResults calls renderWinner
-  });
+/******************************************************************************/
+// Main
 
-  var voteButton = $("#voteButton");
-  voteButton.click(function() {
-    window.location.href = "vote.html?id=" + id;
-  });
+$( function() {
+  getPollData(getResults); // getResults calls renderWinner or renderEndTime
 });
 
+/******************************************************************************/
 
 function getPollData(callback) {
   var pollRef = new Firebase("https://glowing-fire-9001.firebaseio.com/polls/" + id);
 
   var options = [];
   var votes = {};
-  var callbacksLeft = 2;
+  var endTime;
+  var callbacksLeft = 3;
 
   var optionsRef = pollRef.child("options");
   optionsRef.on("value", function(snapshot) {
@@ -34,54 +37,83 @@ function getPollData(callback) {
     done();
   });
 
+  var endTimeRef = pollRef.child("endTime");
+  endTimeRef.on("value", function(snapshot) {
+    endTime = snapshot.val();
+    done();
+  });
+
   function done() {
     callbacksLeft -= 1;
     if( callbacksLeft == 0 ) {
-      callback(null, options, votes);
+      callback(null, options, votes, endTime);
     }
   }
 }
 
+/******************************************************************************/
 
-function getResults(err, options, votes) {
+function getResults(err, options, votes, endTime) {
   if( err ) {
     console.log("oh shit, " + err);
   }
 
-  var schulze = new Schulze();
-  
-  for( var i = 0; i < options.length; i++ ) {
-    schulze.addOption(options[i]);
+  // If there's no end time or the end time is pased, tally up the results
+  if( !endTime || endTime < (new Date().getTime()) )
+  {
+    var schulze = new Schulze();
+    
+    for( var i = 0; i < options.length; i++ ) {
+      schulze.addOption(options[i]);
+    }
+
+    schulze.startVoting();
+
+    var voters = Object.keys(votes);
+    for(var i = 0; i < voters.length; i++ ) {
+      if( !schulze.pushVote( votes[voters[i]] ) ) {
+        console.log("Failed to add vote \"" + newVote + "\"");
+        return "FAILD";
+      }
+    };
+
+    var results = schulze.getResult().split('-');
+    var resultsArr = [];
+    for( var placeDex = 0; placeDex < results.length; placeDex++ ) {
+      resultsArr[placeDex] = [];
+      for( var optionDex = 0; optionDex < results[placeDex].length; optionDex++ ) {
+      var c = results[placeDex].charAt(optionDex);
+        resultsArr[placeDex].push(options[Vote.alphabet.indexOf(c)]);
+      }
+    }
+    renderWinner(null, resultsArr);
+  } else {
+    renderEndTime(null, endTime);
   }
 
-  schulze.startVoting();
-
-  var voters = Object.keys(votes);
-  for(var i = 0; i < voters.length; i++ ) {
-    if( !schulze.pushVote( votes[voters[i]] ) ) {
-      console.log("Failed to add vote \"" + newVote + "\"");
-      return "FAILD";
-    }
-  };
-
-  var results = schulze.getResult().split('-');
-  var resultsArr = [];
-  for( var placeDex = 0; placeDex < results.length; placeDex++ ) {
-    resultsArr[placeDex] = [];
-    for( var optionDex = 0; optionDex < results[placeDex].length; optionDex++ ) {
-    var c = results[placeDex].charAt(optionDex);
-      resultsArr[placeDex].push(options[Vote.alphabet.indexOf(c)]);
-    }
-  }
-  renderWinner(null, resultsArr);
   renderVotes(null, options, votes);
+
+  // If there's no end time or end time has not yet passed, offer to vote
+  if( !endTime || endTime > (new Date().getTime()) )
+  {
+    renderVoteButton(null);
+  }
 }
 
+/******************************************************************************/
 
 function renderWinner( err, results ) {
-  $("#winningOption").append(results[0].join(", "));
+  $("#resultbox").text("In first place:   ");
+  $("#resultbox").append(results[0].join(", "));
 }
 
+/******************************************************************************/
+
+function renderEndTime( err, endTime ) {
+  $("#resultbox").text("The poll will end " + (new Date(endTime).toLocaleString()));
+}
+
+/******************************************************************************/
 
 function renderVotes( err, options, votes ) {
   for( var i = 0; i < options.length; i++ ) {
@@ -93,6 +125,22 @@ function renderVotes( err, options, votes ) {
   }
 }
 
+/******************************************************************************/
+
+function renderVoteButton( err ) {
+  var button = $("<button></button>");
+  button.text("Go Vote");
+  button.addClass("btn");
+  button.addClass("btn-primary");
+  button.addClass("pull-right");
+  button.click(function() {
+    window.location.href = "vote.html?id=" + id;
+  });
+
+  $("#voteButtonBox").append(button);
+}
+
+/******************************************************************************/
 
 function ballotRowHTMLFromSchulzeBallot( voterName, schulzeBallot ) {
   var rowHTMLString = "";

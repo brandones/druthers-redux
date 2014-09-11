@@ -23,6 +23,12 @@ $( function() {
         optionsRef.on("value", function(snapshot) {
           callback(null, snapshot.val());
         });
+      },
+      function(callback) {
+        var endTimeRef = pollRef.child("endTime");
+        endTimeRef.on("value", function(snapshot) {
+          callback(null, snapshot.val());
+        });
       }
     ],
     render
@@ -31,6 +37,16 @@ $( function() {
 
 /******************************************************************************/
 
+function popupAlert(message) {
+  $("#alertbox").addClass("alert");
+  $("#alertbox").addClass("alert-danger");
+  $("#alertbox").attr("role", "alert");
+  $("#alertbox").text(message);
+}
+
+/******************************************************************************/
+
+
 function render(err, results) {
   if (err) {
     console.log("oh shit, " + err);
@@ -38,11 +54,29 @@ function render(err, results) {
   var question = results[0];
   var questionNode = document.getElementById("question");
   questionNode.appendChild(document.createTextNode(question));
-  
-  var options = results[1];
-  for( var i = 0; i < options.length; i++) {
-    addOption(options[i], i);
+
+  var endTime = results[2];
+  if( !endTime || endTime > (new Date().getTime()) )
+  {
+    renderVoteForm(results[1]);
   }
+  else
+  {
+    popupAlert("The voting time for this poll has passed.");
+  }
+
+}
+
+/******************************************************************************/
+
+function renderVoteForm(options) {
+  $( function() {
+    $("#contentbox").load("chunks/voteform.html.chunk", function() {
+      for( var i = 0; i < options.length; i++) {
+        addOption(options[i], i);
+      }
+    });
+  });
 }
 
 /******************************************************************************/
@@ -85,13 +119,6 @@ function addOption(option, optionIndex) {
 function isValidInteger(str) {
   var n = ~~Number(str);
   return String(n) === str && n >= 0;
-}
-
-function popupAlert(message) {
-  $("#alertbox").addClass("alert");
-  $("#alertbox").addClass("alert-danger");
-  $("#alertbox").attr("role", "alert");
-  $("#alertbox").text(message);
 }
 
 /******************************************************************************/

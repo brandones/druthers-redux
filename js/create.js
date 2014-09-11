@@ -55,8 +55,6 @@ function create(form) {
     }
   }
   var endtime = form.endtime.value;
-  console.log(endtime);
-  return;
 
   // create poll id
   var id = makeid();
@@ -77,16 +75,13 @@ function create(form) {
         pollRef.child("createdAt").set(new Date().getTime(), callback);
       },
       function(callback) {
-        pollRef.child("endTime").set(endtime);
+        pollRef.child("endTime").set(new Date(endtime).getTime(), callback);
       }
     ],
     function(err, results) {
       if( err ) {
         console.log("oh shit, " + error);
       } else {
-        for( var i = 0; i < results.length; i++) {
-          console.log(results[i]);
-        }
         // redirect to poll vote page
         window.location.href = "vote.html?id=" + id;
       }

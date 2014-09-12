@@ -64,7 +64,6 @@ function render(err, results) {
   {
     popupAlert("The voting time for this poll has passed.");
   }
-
 }
 
 /******************************************************************************/
@@ -72,10 +71,14 @@ function render(err, results) {
 function renderVoteForm(options) {
   $( function() {
     $("#contentbox").load("chunks/voteform.chunk.html", function() {
+      var optionList = $("<ul></ul>");
+      optionList.attr("id", "optionList");
+      optionList.addClass("list-group");
+      $("#options").append(optionList);
       for( var i = 0; i < options.length; i++) {
         addOption(options[i], i);
       }
-      $( "#options" ).sortable();
+      $( "#optionList" ).sortable();
 //      $( "#options" ).disableSelection();  not sure what this does
     });
   });
@@ -84,15 +87,11 @@ function renderVoteForm(options) {
 /******************************************************************************/
 
 function addOption(option, optionIndex) {
-  var optionDiv = $("<div></div>");
-  optionDiv.addClass("highlight");
-
   var optionNode = $("<li></li>");
+  optionNode.addClass("list-group-item");
   optionNode.text(option);
 
-  optionDiv.append(optionNode);
-
-  $("#options").append(optionDiv);
+  $("#optionList").append(optionNode);
 }
 
 /******************************************************************************/

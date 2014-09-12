@@ -4,4 +4,5 @@ TODO:
 - [ ] complete results listing
 - [ ] write-ins
 - [ ] name input validation
+- [ ] the question should be displayed on the results page
 

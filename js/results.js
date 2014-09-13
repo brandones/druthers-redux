@@ -20,7 +20,7 @@ function getPollData(callback) {
   var options = [];
   var votes = {};
   var endTime;
-  var callbacksLeft = 3;
+  var callbacksLeft = 4;
 
   var optionsRef = pollRef.child("options");
   optionsRef.on("value", function(snapshot) {
@@ -40,6 +40,12 @@ function getPollData(callback) {
   var endTimeRef = pollRef.child("endTime");
   endTimeRef.on("value", function(snapshot) {
     endTime = snapshot.val();
+    done();
+  });
+
+  var questionRef = pollRef.child("question");
+  questionRef.on("value", function(snapshot) {
+    $("#question").text(snapshot.val());
     done();
   });
 

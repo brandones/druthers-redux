@@ -89,6 +89,8 @@ function renderVoteForm(options) {
 function addOption(option, optionIndex) {
   var optionNode = $("<li></li>");
   optionNode.addClass("list-group-item");
+  optionNode.addClass("ballot-option");
+  optionNode.attr("id", Vote.alphabet[optionIndex]);
   optionNode.text(option);
 
   $("#optionList").append(optionNode);
@@ -109,31 +111,8 @@ function isValidInteger(str) {
 function vote(form) {
   // parse form
   var encodedNickname = encodeURIComponent( form.nickname.value );
-  var optionIndex = 0;
-  var ballotArray = []
-  for( var i = 0; i < form.elements.length; i++ ) {
-    if( $(form.elements[i]).hasClass("ballot-option") ) {
-      if( !isValidInteger(form.elements[i].value) ) {
-        popupAlert("Please enter only integers for rankings.");
-        return;
-      }
-      if( !(form.elements[i].value in ballotArray) ) {
-        ballotArray[form.elements[i].value] = "";
-      }
-      ballotArray[form.elements[i].value] += form.elements[i].name;
-    }
-  }
-  var ballotSchulze = "";
 
-  var index = 0;
-  ballotArray.forEach( function(element) {
-    console.log(element);
-    if( index != 0 ) {
-      ballotSchulze += "-";
-    }
-    ballotSchulze += element;
-    index++;
-  });
+  var ballotSchulze = $("#optionList").sortable("toArray").join("-");
 
   console.log( "ballotSchulze: " + ballotSchulze );
 

@@ -54,7 +54,7 @@ function create(form) {
       }
     }
   }
-  var endtime = form.endtime.value;
+  var endtime = new Date(form.endtime.value).getTime();
 
   // create poll id
   var id = makeid();
@@ -75,7 +75,11 @@ function create(form) {
         pollRef.child("createdAt").set(new Date().getTime(), callback);
       },
       function(callback) {
-        pollRef.child("endTime").set(new Date(endtime).getTime(), callback);
+        if( endtime ) {
+          pollRef.child("endTime").set(endtime, callback);
+        } else {
+          callback();
+        }
       }
     ],
     function(err, results) {

@@ -46,7 +46,6 @@ function popupAlert(message) {
 
 /******************************************************************************/
 
-
 function render(err, results) {
   if (err) {
     console.log("oh shit, " + err);

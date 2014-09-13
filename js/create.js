@@ -5,7 +5,6 @@
 
 $( function() {
   addLine();
-  addLine();
 
   var moreButton = document.getElementById( "more" );
   moreButton.onclick = addLine;
@@ -44,6 +43,8 @@ function addLine() {
 /******************************************************************************/
 
 function create(form) {
+  hideAlert();
+
   // parse form
   var question = form.question.value;
   var options = []
@@ -54,7 +55,16 @@ function create(form) {
       }
     }
   }
-  var endtime = new Date(form.endtime.value).getTime();
+
+  // Get end time
+  var endtime = undefined;
+  if( form.endtime.value.trim() != "" ) {
+    endtime = new Date(form.endtime.value).getTime();
+  }
+  if( isNaN(endtime) && endtime != undefined ) {
+    popupAlert("Invalid date entry.");
+    return;
+  }
 
   // create poll id
   var id = makeid();

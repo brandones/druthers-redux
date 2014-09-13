@@ -4,6 +4,8 @@ $( function() {
   $("#navbar").load("chunks/navbar.chunk.html");
 });
 
+/******************************************************************************/
+
 // from http://stackoverflow.com/questions/979975/how-to-get-the-value-from-url-parameter
 function get_query_parameter( name ) {
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
@@ -16,6 +18,8 @@ function get_query_parameter( name ) {
     return results[1];
 } 
 
+/******************************************************************************/
+
 String.prototype.hashCode = function() {
   var hash = 0, i, chr, len;
   if (this.length == 0) return hash;
@@ -26,3 +30,22 @@ String.prototype.hashCode = function() {
   }
   return hash;
 };
+
+/******************************************************************************/
+
+function popupAlert(message) {
+  var alertbox = $("#alertbox");
+  alertbox.addClass("alert");
+  alertbox.addClass("alert-danger");
+  alertbox.attr("role", "alert");
+  alertbox.text(message);
+}
+
+/******************************************************************************/
+
+function hideAlert() {
+  var alertbox = $("#alertbox");
+  alertbox.empty();
+  alertbox.className = "";
+}
+
